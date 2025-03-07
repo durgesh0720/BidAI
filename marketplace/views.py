@@ -249,7 +249,7 @@ def referral_signup(request, username):
             )
             messages.success(request, "Sign up successful! Please log in.")
             return redirect('login')
-    return render(request, 'referral_signup.html', {'referrer': referrer.username})
+    return render(request, 'signup.html', {'referrer': referrer.username})
 
 @login_required
 def redeem_credits(request, product_id):
