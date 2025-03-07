@@ -156,9 +156,6 @@ bidai/
 4. Push to the branch (`git push origin feature-name`).
 5. Open a Pull Request.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Customization
 - **Repository URL**: Replace `https://github.com/yourusername/bidai.git` with your actual repo.
 - **Models**: Assumed `Product`, `Wallet`, `Transaction`—adjust if your models differ.
