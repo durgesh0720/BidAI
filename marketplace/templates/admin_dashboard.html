@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-900 text-center mb-10">Admin Dashboard</h1>
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <h3 class="text-5xl font-bold text-blue-600" id="total-listings">{{ total_listings }}</h3>
+                <p class="text-lg text-gray-700 mt-2">Total Listings</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <h3 class="text-5xl font-bold text-green-600" id="total-purchases">{{ total_purchases }}</h3>
+                <p class="text-lg text-gray-700 mt-2">Total Purchases</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <h3 class="text-5xl font-bold text-purple-600" id="total-users">{{ total_users }}</h3>
+                <p class="text-lg text-gray-700 mt-2">Total Users</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <h3 class="text-5xl font-bold text-orange-600" id="total-views">{{ total_views }}</h3>
+                <p class="text-lg text-gray-700 mt-2">Total Product Views</p>
+            </div>
+        </div>
+
+        <!-- Performance Chart -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-12">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-6">Performance Overview</h2>
+            <div class="w-full h-96">
+                <canvas id="performanceChart" style="display: block;"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Sellers Table -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Top Sellers</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">#</th>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">Username</th>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">Listings</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for seller in top_sellers %}
+                            <tr class="hover:bg-gray-100 transition">
+                                <td class="py-3 px-4">{{ forloop.counter }}</td>
+                                <td class="py-3 px-4">{{ seller.username }}</td>
+                                <td class="py-3 px-4">{{ seller.num_listings }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-3 px-4 text-center text-gray-600">No sellers yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Purchases Table -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Recent Purchases</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead class="bg-green-600 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">User</th>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">Product</th>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">Package</th>
+                            <th class="py-3 px-4 text-left text-sm font-semibold">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for purchase in recent_purchases %}
+                            <tr class="hover:bg-gray-100 transition">
+                                <td class="py-3 px-4">{{ purchase.user.username }}</td>
+                                <td class="py-3 px-4">{{ purchase.product.title }}</td>
+                                <td class="py-3 px-4">{{ purchase.package.name }}</td>
+                                <td class="py-3 px-4">₹{{ purchase.amount }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="py-3 px-4 text-center text-gray-600">No purchases yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Wait for Chart.js to load
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js not loaded yet');
+            return;
+        }
+
+        // Verify canvas
+        const canvas = document.getElementById('performanceChart');
+        if (!canvas) {
+            console.error('Canvas element #performanceChart not found');
+            return;
+        }
+
+        // Initialize Chart
+        try {
+            const ctx = canvas.getContext('2d');
+            const performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Total Listings', 'Total Purchases', 'Total Users'],
+                    datasets: [{
+                        label: 'BID.ai Stats',
+                        data: [
+                            {{ total_listings|default:0|escapejs }},
+                            {{ total_purchases|default:0|escapejs }},
+                            {{ total_users|default:0|escapejs }},
+                        ],
+                        backgroundColor: ['#3B82F6', '#22C55E', '#9333EA', '#F59E0B'],
+                        borderColor: ['#2563EB', '#16A34A', '#7E22CE', '#D97706'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // WebSocket setup
+            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            const wsUrl = `${protocol}${window.location.host}/ws/admin_dashboard/`;
+            console.log('Attempting WebSocket connection to:', wsUrl);
+            const ws = new WebSocket(wsUrl);
+
+            ws.onopen = function() {
+                console.log('WebSocket connected successfully');
+            };
+            ws.onmessage = function(event) {
+                console.log('Received WebSocket message:', event.data);
+                const data = JSON.parse(event.data);
+                document.getElementById('total-listings').textContent = data.total_listings;
+                document.getElementById('total-purchases').textContent = data.total_purchases;
+                document.getElementById('total-users').textContent = data.total_users;
+                document.getElementById('total-views').textContent = data.total_views;
+
+                performanceChart.data.datasets[0].data = [
+                    data.total_listings,
+                    data.total_purchases,
+                    data.total_users,
+                    data.total_views
+                ];
+                performanceChart.update();
+                console.log('Chart updated with WebSocket data');
+            };
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+            ws.onclose = function(event) {
+                console.error('WebSocket closed:', event.code, event.reason);
+            };
+        } catch (e) {
+            console.error('Error initializing chart:', e);
+        }
+    });
+</script>
+{% endblock %}

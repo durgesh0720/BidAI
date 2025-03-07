@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div class="max-w-lg w-full bg-white shadow-lg rounded-lg p-8 space-y-6">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-gray-900">Simulate Payment</h1>
+            <p class="mt-2 text-sm text-gray-600">Complete the mock transaction below</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800">Upgrading: {{ product.title|default:"Missing Product" }}</h2>
+            <p class="mt-1 text-gray-600">Package: <span class="font-medium">{{ package.name|default:"Missing Package" }}</span></p>
+            <p class="mt-1 text-gray-600">Amount: <span class="font-medium text-secondary">₹{{ package.price|default:"N/A" }}</span></p>
+            <p class="mt-2 text-sm text-gray-500 italic">*This is a demo payment for testing purposes only.</p>
+            <!-- Debug Info -->
+            <p class="mt-2 text-sm text-gray-500">Debug: product_id={{ product.id|default:"None" }}, package_id={{ package.id|default:"None" }}</p>
+        </div>
+        <form action="{% url 'payment_success' %}" method="GET" class="text-center">
+            <input type="text" name="product_id" hidden value="{{ product.id }}">
+            <input type="text" name="package_id" hidden value="{{ package.id }}">
+            <button type="submit" class="w-full bg-secondary text-white font-semibold py-3 px-6 rounded-md hover:bg-green-700 transition duration-300 flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Simulate Payment</span>
+            </button>
+        </form>
+        <p class="text-center text-sm text-gray-600">This will add {{ package.extra_views|default:"N/A" }} views to your listing.</p>
+    </div>
+</div>
+{% endblock %}

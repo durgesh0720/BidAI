@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Product Listings</h1>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                    <p class="card-text"><strong>Price:</strong> ₹{{ product.price }}</p>
+                    <p class="card-text"><strong>Views:</strong> {{ product.views }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Buy</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No products available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

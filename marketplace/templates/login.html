@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-bold text-gray-900">Login to BID.ai</h2>
+            <p class="mt-2 text-center text-sm text-gray-600">Access your account to start buying and selling</p>
+        </div>
+        <form method="post" class="mt-8 space-y-6">
+            {% csrf_token %}
+            <div class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" name="username" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your username">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your password">
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-full bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Login</button>
+            </div>
+        </form>
+        <p class="text-center text-sm text-gray-600">
+            Don't have an account? <a href="{% url 'signup' %}" class="font-medium text-primary hover:text-blue-700">Sign Up</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

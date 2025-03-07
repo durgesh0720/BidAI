@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="py-8 px-4">
+    <h1 class="text-3xl font-bold text-gray-900">{{ product.title }}</h1>
+    <p class="mt-2 text-gray-600">Views: <span id="view-count">{{ product.views }}</span></p>
+    <p class="mt-2 text-gray-600">Free Views Remaining: <span id="free-views">{{ product.free_views_remaining }}</span></p>
+    {% if product.seller == request.user %}
+        {% if product.free_views_remaining <= 0 %}
+        <a href="{% url 'upgrade_listing' product.id %}" class="mt-4 inline-block bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-700">Upgrade Listing</a>
+        {% endif %}
+        <a href="{% url 'redeem_credits' product.id %}" class="mt-4 inline-block bg-secondary text-white py-2 px-4 rounded-md hover:bg-green-700">Redeem Credits</a>
+    {% endif %}
+</div>
+
+<script>
+    const productId = {{ product.id }};
+    const ws = new WebSocket(`ws://localhost:8000/ws/product/${productId}/`);
+
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        document.getElementById('view-count').textContent = data.views;
+        document.getElementById('free-views').textContent = data.free_views;
+    };
+
+    ws.onclose = function(event) {
+        console.error('WebSocket closed unexpectedly');
+    };
+</script>
+{% endblock %}

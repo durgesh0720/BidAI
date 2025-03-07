@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="py-8">
+    <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Add New Product</h1>
+    <form method="post" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+        {% csrf_token %}
+        <div class="mb-5">
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <input type="text" id="title" name="title" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" required>
+        </div>
+        <div class="mb-5">
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <textarea id="description" name="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" required></textarea>
+        </div>
+        <div class="mb-5">
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price (₹)</label>
+            <input type="number" step="0.01" id="price" name="price" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" required>
+        </div>
+        <div class="mb-5">
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+            <input type="file" id="image" name="image" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-700">
+        </div>
+        <button type="submit" class="w-full bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Add Product</button>
+    </form>
+</div>
+{% endblock %}

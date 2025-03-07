@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-primary to-blue-400 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Welcome to BID.ai</h1>
+        <p class="text-xl sm:text-2xl mb-6">The AI-Powered Marketplace for Pre-Owned Products</p>
+        <p class="text-lg mb-8">Buy, sell, and earn with smart insights and eco-friendly commerce.</p>
+        <a href="{% url 'signup' %}" class="inline-block bg-white text-primary font-semibold py-3 px-8 rounded-md hover:bg-gray-100 transition duration-300">Get Started</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Why Choose BID.ai?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <i class="bi bi-eye text-5xl text-primary mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">View-Based Listings</h3>
+                <p class="text-gray-600">Track views and upgrade for more visibility with BID Packages.</p>
+            </div>
+            <div class="text-center">
+                <i class="bi bi-cash-stack text-5xl text-primary mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Premium Packages</h3>
+                <p class="text-gray-600">Unlock extra views with BID @49 or BID @99 subscriptions.</p>
+            </div>
+            <div class="text-center">
+                <i class="bi bi-people text-5xl text-primary mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Refer & Earn</h3>
+                <p class="text-gray-600">Invite friends and earn credits for every successful referral.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">How It Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">1</div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">List Your Product</h4>
+                <p class="text-gray-600">Start with 5 free listings, each with 100 free views for 10 days.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">2</div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Track & Upgrade</h4>
+                <p class="text-gray-600">Monitor views and upgrade with BID Packages when needed.</p>
+            </div>
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">3</div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Earn Rewards</h4>
+                <p class="text-gray-600">Refer friends and redeem credits for boosts or listings.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

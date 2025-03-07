@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BID.ai - {% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1D4ED8',
+                        secondary: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/" class="text-2xl font-bold text-gray-900">BID.ai</a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="{% url 'dashboard' %}" class="border-b-2 border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</a>
+                        {% if user.is_staff or user.is_superuser %}
+                            <a href="{% url 'admin_dashboard' %}" class="border-b-2 border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 px-3 py-2 text-sm font-medium {% if request.path == '/admin-dashboard/' %}border-blue-600 text-blue-600{% endif %}">Admin Dashboard</a>
+                        {% endif %}
+                        <a href="{% url 'products' %}" class="border-b-2 border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Products</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'add_product' %}" class="border-b-2 border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Add Product</a>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    {% if user.is_authenticated %}
+                        <span class="text-gray-600 mr-4">Hello, {{ user.username }}</span>
+                        <a href="{% url 'logout' %}" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Login</a>
+                    {% endif %}
+                </div>
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="bg-gray-100 p-2 rounded-md text-gray-600 hover:text-blue-600 focus:outline-none" id="mobile-menu-button">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="hidden sm:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="{% url 'dashboard' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600">Dashboard</a>
+                {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600 {% if request.path == '/admin-dashboard/' %}border-blue-600 text-blue-600 bg-gray-50{% endif %}">Admin Dashboard</a>
+                {% endif %}
+                <a href="{% url 'products' %}" class="border-b-2 border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Products</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'add_product' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600">Add Product</a>
+                    <a href="{% url 'logout' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-600 hover:text-blue-600">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-12">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Brand Section -->
+                <div>
+                    <a href="{% url 'landing_page' %}" class="text-2xl font-bold text-secondary">BID.ai</a>
+                    <p class="mt-2 text-sm text-gray-400">The AI-powered marketplace for pre-owned products.</p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'landing_page' %}" class="text-gray-400 hover:text-secondary transition duration-300">Home</a></li>
+                        <li><a href="{% url 'products' %}" class="text-gray-400 hover:text-secondary transition duration-300">Products</a></li>
+                        <li><a href="{% url 'dashboard' %}" class="text-gray-400 hover:text-secondary transition duration-300">Dashboard</a></li>
+                        <li><a href="{% url 'signup' %}" class="text-gray-400 hover:text-secondary transition duration-300">Sign Up</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact/Social Section -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Connect With Us</h3>
+                    <p class="text-sm text-gray-400">Email: support@bidai.in</p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-secondary transition duration-300">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition duration-300">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition duration-300">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2.04c-5.5 0-10 4.5-10 10 0 4.4 3.6 8 8 9.6v-6.8H7.9v-2.8h2.1V9.7c0-2.1 1.3-3.2 3.2-3.2.9 0 1.8.2 1.8.2v2h-1c-1 0-1.2.5-1.2 1.2v1.5h2.1l-.3 2.8h-1.8v6.8c4.4-1.6 8-5.2 8-9.6 0-5.5-4.5-10-10-10z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center">
+                <p class="text-sm text-gray-400">© 2025 BID.ai. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
