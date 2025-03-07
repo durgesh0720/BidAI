@@ -27,6 +27,7 @@ ASGI_APPLICATION = 'bidai.asgi.application'
 
 INSTALLED_APPS = [
     'daphne',
+    "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,7 +37,14 @@ INSTALLED_APPS = [
     'marketplace',
     'channels',
 ]
-
+JAZZMIN_SETTINGS = {
+    "site_title": "BID.ai Admin",
+    "site_header": "BID.ai Dashboard",
+    "welcome_sign": "Welcome to BID.ai Admin",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "theme": "darkly",  # Available themes: 'darkly', 'flatly', 'pulse', etc.
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
